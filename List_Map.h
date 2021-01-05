@@ -57,6 +57,7 @@ public:
     T& operator[] (const S& key);
     iterator erase(iterator pos);
     iterator erase(const S& key);
+    bool contains(const S& key);
 
 
 private:
@@ -182,6 +183,12 @@ typename List_Map<S, T>::iterator List_Map<S, T>::erase(const S& key)
     List_Map<S, T>::iterator it = this->begin();
     for(; it!= this->end() && it->key != key; ++it);
     return erase(it);
+}
+
+template <class S, class T>
+bool List_Map<S, T>::contains(const S& key)
+{
+    return (find_position(key) != this->end() && find_position(key)->key == key);
 }
 
 //*************private methods********************************************************
