@@ -1,7 +1,15 @@
 #include "CourseData.h"
 
-CourseData::CourseData() : array_size(inititial_array_size), top(0), classes_array(new int[array_size])
+CourseData::CourseData() : array_size(inititial_classes_array_size), top(0), classes_array(new int[array_size])
 {
+}
+
+CourseData::CourseData(const CourseData& to_copy) : array_size(to_copy.array_size), top(to_copy.top), classes_array(new int[array_size])
+{
+    for(int i = 0; i < array_size; i++)
+    {
+        classes_array[i] = to_copy.classes_array[i];
+    }
 }
 
 CourseData::~CourseData()

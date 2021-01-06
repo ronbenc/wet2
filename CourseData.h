@@ -1,11 +1,11 @@
 #ifndef WET2_COURSE_DATA_H
 #define WET2_COURSE_DATA_H
 
+const int inititial_classes_array_size = 4;
+
 class CourseData
 {
-private:
-    static constexpr int inititial_array_size = 4;
-    
+private:  
     int array_size;
     int top;
     
@@ -13,6 +13,7 @@ public:
     int* classes_array;
 
     CourseData();
+    CourseData(const CourseData& to_copy);
     ~CourseData();
     void AddClass();
     int size() const;

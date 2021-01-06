@@ -4,14 +4,14 @@
 #include <cassert>
 #include "List_Map.h"
 
+const int inititial_hash_table_array_size = 4;
+const double maximal_load_factor = 1;
+const double minimal_load_factor = 0.25;
+
 template <class T> //value type
 class Hash_Table
 {
 private:
-    static constexpr int inititial_array_size = 4;
-    static constexpr double maximal_load_factor = 1;
-    static constexpr double minimal_load_factor = 0.25;
-
     int array_size;
     int num_of_elements;
     List_Map<int, T>* hash_table_array;
@@ -19,8 +19,7 @@ private:
 public:
     Hash_Table();
     ~Hash_Table();
-
-    void insert(const int key, const T& value = T());
+    void insert(const int key);
     void erase(const int key);
     T& operator[] (const int key); //access only
     bool contains(const int key);
@@ -34,7 +33,7 @@ private:
 //***************************************functions implementation**************************************
 
 template <class T>
-Hash_Table<T>::Hash_Table() : array_size(inititial_array_size), num_of_elements(0), hash_table_array(new List_Map<int, T>[array_size])
+Hash_Table<T>::Hash_Table() : array_size(inititial_hash_table_array_size), num_of_elements(0), hash_table_array(new List_Map<int, T>[array_size])
 { 
 }
 
@@ -45,9 +44,9 @@ Hash_Table<T>::~Hash_Table()
 }
 
 template <class T>
-void Hash_Table<T>::insert(const int key, const T& value)
+void Hash_Table<T>::insert(const int key)
 {
-    hash_table_array[hash(key)].insert(key, value);
+    hash_table_array[hash(key)].insert(key);
     num_of_elements++;
 
     //handle enlargement
