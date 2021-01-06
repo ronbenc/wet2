@@ -1,8 +1,16 @@
 #include "CoursesManager.h"
 
+
 void CoursesManager::AddCourse(int courseID)
 {
-    //handle exep...
+    if(courseID <= 0)
+    {
+        throw InvalidInput();
+    }
+    if(course_map.contains(courseID))
+    {
+        throw Failure();
+    }
     assert(courseID > 0 && !course_map.contains(courseID));
 
     course_map.insert(courseID);
@@ -10,7 +18,14 @@ void CoursesManager::AddCourse(int courseID)
 
 void CoursesManager::RemoveCourse(int courseID)
 {
-    //handle exep...
+    if(courseID <= 0)
+    {
+        throw InvalidInput();
+    }
+    if(!course_map.contains(courseID))
+    {
+        throw Failure();
+    }
     assert(courseID > 0 && course_map.contains(courseID));
 
     //remove classes from time tree
@@ -25,7 +40,14 @@ void CoursesManager::RemoveCourse(int courseID)
 
 int CoursesManager::AddClass(int courseID)
 {
-    //handle exep...
+    if(courseID <= 0)
+    {
+        throw InvalidInput();
+    }
+    if(!course_map.contains(courseID))
+    {
+        throw Failure();
+    }
     assert(courseID > 0 && course_map.contains(courseID));
 
     course_map[courseID].AddClass();
@@ -34,7 +56,14 @@ int CoursesManager::AddClass(int courseID)
 
 void CoursesManager::WatchClass(int courseID, int classID, int time)
 {
-    //handle exep...
+    if(courseID <= 0 || classID < 0 || time <= 0 || classID+1 > course_map[courseID].size())
+    {
+        throw InvalidInput();
+    }
+    if(!course_map.contains(courseID))
+    {
+        throw Failure();
+    }
     assert(courseID > 0 && course_map.contains(courseID) && classID >= 0 && time > 0 && classID < course_map[courseID].size());
 
     //update in course_map
@@ -45,8 +74,31 @@ void CoursesManager::WatchClass(int courseID, int classID, int time)
 
 int CoursesManager::TimeViewed(int courseID, int classID)
 {
-    //handle exep...
+    if(courseID <= 0 || classID < 0 || classID+1 > course_map[courseID].size())
+    {
+        throw InvalidInput();
+    }
+    if(!course_map.contains(courseID))
+    {
+        throw Failure();
+    }
     assert(courseID > 0 && course_map.contains(courseID) && classID >= 0 && classID < course_map[courseID].size());
 
     return course_map[courseID].classes_array[classID];
+}
+
+void CoursesManager::GetIthWatchedClass(int i, int* courseID, int* classID)
+{
+    if(i <= 0)
+    {
+        throw InvalidInput();
+    }
+    if(false) //if time tree size < i
+    {
+        throw Failure();
+    }
+
+    //for testing
+    *courseID = -1;
+    *classID = -1;
 }

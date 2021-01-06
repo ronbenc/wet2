@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "library.h"
+#include "library2.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,22 +28,24 @@ typedef enum {
     NONE_CMD = -2,
     COMMENT_CMD = -1,
     INIT_CMD = 0,
-	ADDCOURSE_CMD = 1,
-	REMOVECOURSE_CMD = 2,
-	WATCHCLASS_CMD = 3,
-	TIMEVIEWED_CMD = 4,
-	GETMOSTVIEWEDCLASSES_CMD = 5,
-    QUIT_CMD = 6
+    ADDCOURSE_CMD = 1,
+    REMOVECOURSE_CMD = 2,
+    ADDCLASS_CMD = 3,
+    WATCHCLASS_CMD = 4,
+    TIMEVIEWED_CMD = 5,
+    GETITH_CMD = 6,
+    QUIT_CMD = 7
 } commandType;
 
-static const int numActions = 9;
+static const int numActions = 10;
 static const char *commandStr[] = {
         "Init",
         "AddCourse",
         "RemoveCourse",
+        "AddClass",
         "WatchClass",
         "TimeViewed",
-        "GetMostViewedClasses",
+        "GetIthWatchedClass",
         "Quit" };
 
 static const char* ReturnValToStr(int val) {
@@ -123,9 +125,10 @@ static commandType CheckCommand(const char* const command,
 static errorType OnInit(void** DS, const char* const command);
 static errorType OnAddCourse(void* DS, const char* const command);
 static errorType OnRemoveCourse(void* DS, const char* const command);
+static errorType OnAddClass(void* DS, const char* const command);
 static errorType OnWatchClass(void* DS, const char* const command);
 static errorType OnTimeViewed(void* DS, const char* const command);
-static errorType OnGetMostViewedClasses(void* DS, const char* const command);
+static errorType OnGetIthWatchedClass(void* DS, const char* const command);
 static errorType OnQuit(void** DS, const char* const command);
 
 /***************************************************************************/
@@ -150,14 +153,17 @@ static errorType parser(const char* const command) {
         case (REMOVECOURSE_CMD):
             rtn_val = OnRemoveCourse(DS, command_args);
             break;
+        case (ADDCLASS_CMD):
+            rtn_val = OnAddClass(DS, command_args);
+            break;
         case (WATCHCLASS_CMD):
             rtn_val = OnWatchClass(DS, command_args);
             break;
         case (TIMEVIEWED_CMD):
             rtn_val = OnTimeViewed(DS, command_args);
             break;
-        case (GETMOSTVIEWEDCLASSES_CMD):
-            rtn_val = OnGetMostViewedClasses(DS, command_args);
+        case (GETITH_CMD):
+            rtn_val = OnGetIthWatchedClass(DS, command_args);
             break;
         case (QUIT_CMD):
             rtn_val = OnQuit(&DS, command_args);
@@ -196,9 +202,9 @@ static errorType OnInit(void** DS, const char* const command) {
 }
 
 static errorType OnAddCourse(void* DS, const char* const command) {
-    int courseID, numOfClasses;
-    ValidateRead(sscanf(command, "%d %d", &courseID, &numOfClasses), 2, "%s failed.\n", commandStr[ADDCOURSE_CMD]);
-    StatusType res = AddCourse(DS, courseID, numOfClasses);
+    int courseID;
+    ValidateRead(sscanf(command, "%d", &courseID), 1, "%s failed.\n", commandStr[ADDCOURSE_CMD]);
+    StatusType res = AddCourse(DS, courseID);
 
     if (res != SUCCESS) {
         printf("%s: %s\n", commandStr[ADDCOURSE_CMD], ReturnValToStr(res));
@@ -223,6 +229,20 @@ static errorType OnRemoveCourse(void* DS, const char* const command) {
     return error_free;
 }
 
+static errorType OnAddClass(void* DS, const char* const command) {
+    int courseID, classID;
+    ValidateRead(sscanf(command, "%d", &courseID), 1, "%s failed.\n", commandStr[ADDCLASS_CMD]);
+    StatusType res = AddClass(DS, courseID, &classID);
+
+    if (res != SUCCESS) {
+        printf("%s: %s\n", commandStr[ADDCLASS_CMD], ReturnValToStr(res));
+        return error_free;
+    }
+
+    printf("%s: %d\n", commandStr[ADDCLASS_CMD], classID);
+    return error_free;
+}
+
 static errorType OnWatchClass(void* DS, const char* const command) {
     int courseID, classID, time;
     ValidateRead(sscanf(command, "%d %d %d", &courseID, &classID, &time), 3, "%s failed.\n", commandStr[WATCHCLASS_CMD]);
@@ -238,7 +258,7 @@ static errorType OnWatchClass(void* DS, const char* const command) {
 }
 
 static errorType OnTimeViewed(void* DS, const char* const command) {
-	int courseID, classID, timeViewed;
+    int courseID, classID, timeViewed;
     ValidateRead(sscanf(command, "%d %d", &courseID, &classID), 2, "%s failed.\n", commandStr[TIMEVIEWED_CMD]);
     StatusType res = TimeViewed(DS, courseID, classID, &timeViewed);
 
@@ -251,45 +271,17 @@ static errorType OnTimeViewed(void* DS, const char* const command) {
     return error_free;
 }
 
-static errorType OnGetMostViewedClasses(void* DS, const char* const command) {
-    int numOfClasses;
-    int *courses = NULL, *classes = NULL;
-	StatusType res = SUCCESS;
-
-	ValidateRead(sscanf(command, "%d", &numOfClasses), 1, "%s failed.\n", commandStr[GETMOSTVIEWEDCLASSES_CMD]);
-	if (numOfClasses > 0) {
-		courses = (int *)malloc(numOfClasses * sizeof(int));
-		classes = (int *)malloc(numOfClasses * sizeof(int));
-		if (courses == NULL || classes == NULL) {
-		res = ALLOCATION_ERROR;
-		}
-	}
-
-	if (res != ALLOCATION_ERROR) {
-		res = GetMostViewedClasses(DS, numOfClasses, courses, classes);
-	}
+static errorType OnGetIthWatchedClass(void* DS, const char* const command) {
+    int i, courseID, classID;
+    ValidateRead(sscanf(command, "%d", &i), 1, "%s failed.\n", commandStr[GETITH_CMD]);
+    StatusType res = GetIthWatchedClass(DS, i, &courseID, &classID);
 
     if (res != SUCCESS) {
-        printf("%s: %s\n", commandStr[GETMOSTVIEWEDCLASSES_CMD], ReturnValToStr(res));
-		if (courses != NULL) free(courses);
-		if (classes != NULL) free(classes);
+        printf("%s: %s\n", commandStr[GETITH_CMD], ReturnValToStr(res));
         return error_free;
     }
 
-    printf("%s: %s\n", commandStr[GETMOSTVIEWEDCLASSES_CMD], ReturnValToStr(res));
-
-	printf("Course\t|\tClass\n");
-
-    for (int i = 0; i < numOfClasses; i++)
-    {
-        printf("%d\t|\t%d\n", courses[i], classes[i]);
-    }
-
-    printf("--End of most viewed classes--\n");
-
-	if (courses != NULL) free(courses);
-	if (classes != NULL) free(classes);
-
+    printf("%s: %d %d\n", commandStr[GETITH_CMD], courseID, classID);
     return error_free;
 }
 

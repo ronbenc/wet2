@@ -14,6 +14,7 @@ public:
 
     CourseData();
     CourseData(const CourseData& to_copy);
+    CourseData& operator=(const CourseData& other);
     ~CourseData();
     void AddClass();
     int size() const;

@@ -12,6 +12,26 @@ CourseData::CourseData(const CourseData& to_copy) : array_size(to_copy.array_siz
     }
 }
 
+CourseData& CourseData::operator=(const CourseData& other)
+{
+    if(this == &other)
+    {
+        return *this;
+    }
+
+    delete[] classes_array;
+    classes_array = new int[other.array_size];
+    array_size = other.array_size;
+    top = other.top;
+
+    for(int i =0; i < top; i++)
+    {
+        classes_array[i] = other.classes_array[i];
+    }
+
+    return *this;
+}
+
 CourseData::~CourseData()
 {
     delete[] classes_array;

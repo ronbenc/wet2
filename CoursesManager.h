@@ -3,6 +3,7 @@
 
 #include "Hash_Table.h"
 #include "CourseData.h"
+#include "Exceptions.h"
 
 class CoursesManager
 {
@@ -17,6 +18,7 @@ public:
     int AddClass(int courseID); //returns the inserted class id
     void WatchClass(int courseID, int classID, int time);
     int TimeViewed(int courseID, int classID);
+    void GetIthWatchedClass(int i, int* courseID, int* classID);
 };
 
 
