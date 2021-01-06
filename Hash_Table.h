@@ -4,22 +4,20 @@
 #include <cassert>
 #include "List_Map.h"
 
-const int default_inititial_array_size = 4;
+const int inititial_array_size = 4;
 const double maximal_load_factor = 1;
 const double minimal_load_factor = 0.25;
 
-template <class T>
+template <class T> //value type
 class Hash_Table
 {
 private:
-
     int array_size;
     int num_of_elements;
     List_Map<int, T>* hash_table_array;
 
 public:
-    
-    Hash_Table(const int array_size = default_inititial_array_size);
+    Hash_Table();
     ~Hash_Table();
 
     void insert(const int key, const T& value = T());
@@ -36,7 +34,7 @@ private:
 //***************************************functions implementation**************************************
 
 template <class T>
-Hash_Table<T>::Hash_Table(const int array_size) : array_size(array_size), num_of_elements(0), hash_table_array(new List_Map<int, T>[array_size])
+Hash_Table<T>::Hash_Table() : array_size(inititial_array_size), num_of_elements(0), hash_table_array(new List_Map<int, T>[array_size])
 { 
 }
 
@@ -73,7 +71,6 @@ void Hash_Table<T>::erase(const int key)
     }
 }
 
-
 template <class T>
 T& Hash_Table<T>::operator[] (const int key)
 {
@@ -105,7 +102,6 @@ int Hash_Table<T>::hash(const int key) const
     return index;
 }
 
-//consider a new objoct approach....
 template <class T>
 void Hash_Table<T>::resize(const int new_array_size)
 {
@@ -126,4 +122,5 @@ void Hash_Table<T>::resize(const int new_array_size)
     delete[] hash_table_array;
     hash_table_array = new_hash_table_array;
 }
+
 #endif //WET2_HASH_TABLE_H
