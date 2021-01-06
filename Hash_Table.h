@@ -4,14 +4,14 @@
 #include <cassert>
 #include "List_Map.h"
 
-const int inititial_array_size = 4;
-const double maximal_load_factor = 1;
-const double minimal_load_factor = 0.25;
-
 template <class T> //value type
 class Hash_Table
 {
 private:
+    static constexpr int inititial_array_size = 4;
+    static constexpr double maximal_load_factor = 1;
+    static constexpr double minimal_load_factor = 0.25;
+
     int array_size;
     int num_of_elements;
     List_Map<int, T>* hash_table_array;

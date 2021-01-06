@@ -1,11 +1,11 @@
 #ifndef WET2_COURSE_DATA_H
 #define WET2_COURSE_DATA_H
 
-const int inititial_array_size = 4;
-
 class CourseData
 {
 private:
+    static constexpr int inititial_array_size = 4;
+    
     int array_size;
     int top;
     

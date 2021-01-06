@@ -4,7 +4,7 @@ project(wet1 VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_executable(wet2 main.cpp) 
+add_executable(wet2 main.cpp CourseData.cpp) 
 
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
