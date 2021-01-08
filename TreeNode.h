@@ -143,7 +143,7 @@ void TreeNode<T>::rankCalc()
     assert(this);    
     int l_rank = (this->getLeft() ? this->getLeft()->rank : 0);
     int r_rank = (this->getRight() ? this->getRight()->rank : 0);
-    this->rank = 1 + l_rank + r_rank;    
+    this->rank = 1 + l_rank + r_rank;
 }
 
 template<class T>
@@ -355,7 +355,7 @@ void TreeNode<T>::decreaseRank()
     {
         throw IllegalArgument_TreeNode();
     }
-    this->rank--;
+    this->rank--;  
 }
 
 //******************************non-member functions' implementations**************************

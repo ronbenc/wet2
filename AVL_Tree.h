@@ -392,9 +392,10 @@ void AVL_Tree<T>::insertNode(T data)
     {
         throw IllegalArgument_AVL_Tree();
     }
+    bool is_in_tree = false;
     if(root) 
     {
-        bool is_in_tree = this->contains(data);
+        is_in_tree = this->contains(data);
         this->insert(data, root);
         TreeNode<T>* curr = this->searchNode(data);        
         if((*curr) < (*this->min))
@@ -413,7 +414,10 @@ void AVL_Tree<T>::insertNode(T data)
 		this->root = new TreeNode<T>(data);
         this->min = root;
     }
-    this->size++;
+    if(!is_in_tree) //only if key hasn't already been in tree - increase size
+    {
+        this->size++;
+    }    
     TreeNode<T> *vertex = this->searchNode(data);
     assert(vertex);
     this->BalanceCheck(vertex, true);
@@ -497,9 +501,9 @@ void AVL_Tree<T>::rankUpdateInsert(TreeNode<T>* node)
 }
 
 template <class T>
-void AVL_Tree<T>::rankUpdateRemove(TreeNode<T>* node)
+void AVL_Tree<T>::rankUpdateRemove(TreeNode<T>* toRank)
 {
-    TreeNode<T>* tmp = node;
+    TreeNode<T>* tmp = toRank;
     while(tmp)
     {
         tmp->decreaseRank();
@@ -579,8 +583,8 @@ void AVL_Tree<T>::removeNode(T data)
     TreeNode<T>* toDelete = this->searchNode(data);
     if (!toDelete) {return;}
     TreeNode<T>* toDelete_parent = toDelete->getParent();
-    rankUpdateRemove(toDelete_parent);
     TreeNode<T>* toBalance = nullptr;
+    TreeNode<T>* toRank = nullptr;
     
     //check if updating minimal element is needed
     if(data == min->getData())
@@ -595,6 +599,7 @@ void AVL_Tree<T>::removeNode(T data)
         {
             assert(toDelete_parent);
             toBalance = toDelete_parent;
+            toRank = toDelete_parent;
             if(toDelete->isLeftSon())
             {
                 toDelete_parent->setLeft(nullptr);
@@ -624,13 +629,16 @@ void AVL_Tree<T>::removeNode(T data)
         {
             assert(successor->getParent());
             toBalance = successor->getParent();
+            toRank = successor->getParent();
             successor->getParent()->setLeft(successor->getRight());
             successor->setRight(toDelete->getRight());
         }
         else
         {
             toBalance = successor;
+            toRank = toDelete->getParent();        
         }
+        successor->rankCalc();
         if(toDelete_parent)
         {
             if(toDelete->isLeftSon())
@@ -646,7 +654,7 @@ void AVL_Tree<T>::removeNode(T data)
         {
             root = successor;
             root->setParent(nullptr);
-        }        
+        }
         delete toDelete;
     }
     //case 3: has one child
@@ -666,6 +674,7 @@ void AVL_Tree<T>::removeNode(T data)
             }
             delete toDelete;
             toBalance = toDelete_parent;
+            toRank = toDelete_parent;
         }
         else
         {
@@ -675,6 +684,10 @@ void AVL_Tree<T>::removeNode(T data)
         }
     }
     size--;
+    if(toRank)
+    {
+        rankUpdateRemove(toRank);
+    }    
     if(toBalance)
     {
         this->BalanceCheck(toBalance, false);
