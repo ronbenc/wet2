@@ -6,13 +6,14 @@
 #include "AVL_Tree.h"
 #include "AVL_Tree_iterator.h"
 #include "Pair.h"
+#include "Lecture.h"
 #include "Exceptions.h"
 
 class CoursesManager
 {
 private:
     Hash_Table<CourseData> course_map;
-    // Map<int, Pair<int, int>> time_map;
+    AVL_Tree<Lecture> times_map;
     
 public:
     CoursesManager() = default;

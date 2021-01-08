@@ -10,7 +10,7 @@ class Lecture
     int courseID;
     int classID;
 
-    Lecture(int view_time, int courseID, int classID) : view_time(view_time), courseID(courseID), classID(classID) {}
+    explicit Lecture(int view_time = 0, int courseID = 0, int classID = 0) : view_time(view_time), courseID(courseID), classID(classID) {}
     Lecture(const Lecture& to_copy) = default;
     Lecture& operator=(const Lecture& other) = default;
     ~Lecture() = default;
