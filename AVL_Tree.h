@@ -99,7 +99,7 @@ class AVL_Tree
     void insertNode(T data);
     void removeNode(T data);
     bool contains(T data);
-    TreeNode<T>* Select(int);
+    T Select(int);
     TreeNode<T>* getRoot() const;   
     TreeNode<T>* getRoot();
     int getSize() const;
@@ -722,14 +722,14 @@ TreeNode<T>* AVL_Tree<T>::recursiveSelect(TreeNode<T>* tmp_root, int tree_size, 
 }
 
 template<class T>
-TreeNode<T>* AVL_Tree<T>::Select(int k)
+T AVL_Tree<T>::Select(int k)
 {
     int size = this->getSize();
     if(k > size)
     {
         throw IllegalArgument_AVL_Tree();
     }
-    return recursiveSelect(root, size, size - k);
+    return recursiveSelect(root, size, size - k)->getData();
 }
 
 
