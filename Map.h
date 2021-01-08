@@ -121,7 +121,7 @@ class Map
     void remove(const T& key);
     bool contains(const T& key) const;
 
-    S& operator[] (const T& key); 
+    // S& operator[] (const T& key); 
     const S& operator[] (const T& key) const;
 
     class iterator;
@@ -201,16 +201,16 @@ const S& Map<T,S>::operator[] (const T& key) const
     return tmp->getData().second;
 }
 
-template<class T, class S>
-S& Map<T,S>::operator[] (const T& key)
-{
-    if(!this->contains(key))
-    {
-        throw IllegalArgument_Map();
-    }
-    TreeNode<Pair<T,S>>* tmp = this->findVal(key);    
-    return tmp->getData().second;
-}
+// template<class T, class S>
+// S& Map<T,S>::operator[] (const T& key)
+// {
+//     if(!this->contains(key))
+//     {
+//         throw IllegalArgument_Map();
+//     }
+//     TreeNode<Pair<T,S>>* tmp = this->findVal(key);    
+//     return tmp->getData().second;
+// }
 
 //*********************iterator************************************
 template<class T, class S>

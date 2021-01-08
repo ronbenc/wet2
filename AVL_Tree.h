@@ -81,7 +81,7 @@ class AVL_Tree
     static void rankUpdateLL(TreeNode<T>* node);
     static void rankUpdateRR(TreeNode<T>* node);
     static void rankUpdateLR(TreeNode<T>* node);
-    static void rankUpdateRL(TreeNode<T>* node);
+    static void rankUpdateRL(TreeNode<T>* node);    
     TreeNode<T>* findMin() const;
     TreeNode<T>* findMax() const;   
     
@@ -91,6 +91,7 @@ class AVL_Tree
     const TreeNode<T>* constFindPrevPtr(const TreeNode<T>*) const;
     TreeNode<T>* findPrevPtr(TreeNode<T>*) const;
     TreeNode<T>* searchNode(T data);
+    static TreeNode<T>* recursiveSelect(TreeNode<T>* tmp_root, int tree_size, int k);
             
     public:
     AVL_Tree();
@@ -98,6 +99,7 @@ class AVL_Tree
     void insertNode(T data);
     void removeNode(T data);
     bool contains(T data);
+    TreeNode<T>* Select(int);
     TreeNode<T>* getRoot() const;   
     TreeNode<T>* getRoot();
     int getSize() const;
@@ -699,6 +701,37 @@ bool AVL_Tree<T>::contains(T data)
 {
     return (this->searchNode(data) ? true : false);
 }
+
+template<class T>
+TreeNode<T>* AVL_Tree<T>::recursiveSelect(TreeNode<T>* tmp_root, int tree_size, int index)
+{
+    int leftSonRank = tmp_root->getLeft()->getRank();
+    int rightSonRank = tmp_root->getRight()->getRank();
+    if(leftSonRank == index - 1)
+    {
+        return tmp_root;
+    }
+    else if(leftSonRank > index - 1)
+    {
+        return recursiveSelect(tmp_root->getLeft(), leftSonRank, index);
+    }
+    else
+    {
+        return recursiveSelect(tmp_root->getRight(), rightSonRank, index - leftSonRank - 1);
+    }    
+}
+
+template<class T>
+TreeNode<T>* AVL_Tree<T>::Select(int k)
+{
+    int size = this->getSize();
+    if(k > size)
+    {
+        throw IllegalArgument_AVL_Tree();
+    }
+    return recursiveSelect(root, size, size - k);
+}
+
 
 //Helper function that returns a ptr to the next node (in order)
 template<class T>

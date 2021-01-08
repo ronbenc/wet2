@@ -3,13 +3,17 @@
 
 #include "Hash_Table.h"
 #include "CourseData.h"
+#include "AVL_Tree.h"
+#include "AVL_Tree_iterator.h"
+#include "Pair.h"
 #include "Exceptions.h"
 
 class CoursesManager
 {
 private:
     Hash_Table<CourseData> course_map;
-
+    // Map<int, Pair<int, int>> time_map;
+    
 public:
     CoursesManager() = default;
     ~CoursesManager() = default;
