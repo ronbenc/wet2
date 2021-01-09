@@ -1,8 +1,8 @@
 #include "Lecture.h"
 
-std::ostream& operator<<(std::ostream& os, Lecture a)
+std::ostream& operator<<(std::ostream& os, const Lecture& a)
 {
-    os << "<" << a.courseID << "," << a.classID << ">" << std::endl;
+    os << "<" << a.courseID << "," << a.classID << ">" << "-" << a.view_time << " ";
     return os;
 }
 
@@ -50,7 +50,7 @@ bool operator>=(Lecture a, Lecture b)
 
 bool operator==(Lecture a, Lecture b)
 {
-    return ((a.courseID == b.courseID) && (a.classID == b.classID));
+    return ((a.courseID == b.courseID) && (a.classID == b.classID) && (a.view_time == b.view_time));
 }
 
 bool operator!=(Lecture a, Lecture b)

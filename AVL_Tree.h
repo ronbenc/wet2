@@ -102,7 +102,7 @@ class AVL_Tree
     void removeNode(T data);
     bool contains(T data);
     T Select(int);
-    TreeNode<T>* find(int courseID, int classID) const;
+    TreeNode<T>* find(const T&) const;
     TreeNode<T>* getRoot() const;   
     TreeNode<T>* getRoot();
     int getSize() const;
@@ -736,10 +736,9 @@ T AVL_Tree<T>::Select(int index)
 }
 
 template <class T>
-TreeNode<T>* AVL_Tree<T>::find(int courseID, int classID) const
+TreeNode<T>* AVL_Tree<T>::find(const T& tmp) const
 {
-    TreeNode<T>* node = this->getRoot();
-    Lecture tmp = Lecture(0, courseID, classID);
+    TreeNode<T>* node = this->getRoot();    
     while(node)
     {
         if(node->getData() == tmp)

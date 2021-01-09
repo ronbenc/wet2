@@ -66,25 +66,20 @@ void CoursesManager::WatchClass(int courseID, int classID, int time)
     }
     assert(courseID > 0 && course_map.contains(courseID) && classID >= 0 && time > 0 && classID < course_map[courseID].size());
 
+    //update in time tree - itay
+    int prev_time = course_map[courseID].classes_array[classID];
+    if(view_tree.contains(Lecture(courseID, classID, prev_time)))
+    {
+        TreeNode<Lecture>* prev_node = view_tree.find(Lecture(courseID, classID, prev_time));
+        view_tree.removeNode(prev_node->getData());
+        std::cout << view_tree << std::endl;//debug
+    }
+    int curr_time = prev_time + time;
+    view_tree.insertNode(Lecture(courseID, classID, curr_time));
+
     //update in course_map
     course_map[courseID].classes_array[classID] += time;
 
-    
-    //update in time tree
-    
-    Lecture tmp = Lecture(0, courseID, classID);
-    int prev_time = 0;
-    
-    //if the class already has been watched, save previous view time and remove from tree
-    if(times_map.contains(tmp))
-    {
-        TreeNode<Lecture>* prev_node = this->times_map.find(courseID, classID);
-        prev_time = prev_node->getData().view_time;
-        times_map.removeNode(Lecture(0, courseID, classID));
-    }    
-
-    //insert with correct data
-    times_map.insertNode(Lecture(prev_time + time, courseID, classID));
 }
 
 int CoursesManager::TimeViewed(int courseID, int classID)
@@ -108,13 +103,17 @@ void CoursesManager::GetIthWatchedClass(int i, int* courseID, int* classID)
     {
         throw InvalidInput();
     }
-    if(i > this->times_map.getSize()) //if time tree size < i
+    if(false) //if time tree size < i
     {
-        throw Failure();
+
     }
-    Lecture ith = times_map.Select(times_map.getSize() - i);
+    // if(i > this->times_map.getSize()) //if time tree size < i
+    // {
+    //     throw Failure();
+    // }
+    // Lecture ith = times_map.Select(times_map.getSize() - i);
     
     //for testing
-    *courseID = ith.courseID;
-    *classID = ith.classID;
+    *courseID = -1;
+    *classID = -1;
 }

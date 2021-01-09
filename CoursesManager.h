@@ -8,14 +8,19 @@
 #include "Pair.h"
 #include "Lecture.h"
 #include "Exceptions.h"
+#include "linked_int.h"
+#include "linked_pair.h"
 
 class CoursesManager
 {
 private:
     Hash_Table<CourseData> course_map;
-    AVL_Tree<Lecture> times_map;
     
-public:
+    
+    public:
+    // AVL_Tree<linked_pair> lectures;
+    // AVL_Tree<linked_int> times;
+    AVL_Tree<Lecture> view_tree;
     CoursesManager() = default;
     ~CoursesManager() = default;
     void AddCourse(int courseID);
