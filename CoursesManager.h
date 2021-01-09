@@ -8,8 +8,6 @@
 #include "Pair.h"
 #include "Lecture.h"
 #include "Exceptions.h"
-#include "linked_int.h"
-#include "linked_pair.h"
 
 class CoursesManager
 {
