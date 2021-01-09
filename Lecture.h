@@ -14,8 +14,7 @@ class Lecture
     explicit Lecture(int courseID, int classID, int view_time = 0) : courseID(courseID), classID(classID), view_time(view_time) {}
     Lecture(const Lecture& to_copy) = default;
     Lecture& operator=(const Lecture& other) = default;
-    ~Lecture() = default;
-    // void viewAdd(int a);    
+    ~Lecture() = default;    
 };
 
 std::ostream& operator<<(std::ostream& os, const Lecture& a);
