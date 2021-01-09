@@ -708,8 +708,8 @@ bool AVL_Tree<T>::contains(T data)
 template<class T>
 TreeNode<T>* AVL_Tree<T>::recursiveSelect(TreeNode<T>* tmp_root, int tree_size, int index)
 {
-    int leftSonRank = tmp_root->getLeft()->getRank();
-    int rightSonRank = tmp_root->getRight()->getRank();
+    int leftSonRank = (tmp_root->getLeft() ? tmp_root->getLeft()->getRank() : 0);
+    int rightSonRank = (tmp_root->getRight() ? tmp_root->getRight()->getRank() : 0);
     if(leftSonRank == index - 1)
     {
         return tmp_root;

@@ -33,6 +33,7 @@ void CoursesManager::RemoveCourse(int courseID)
     {
         int curr_class_time = course_map[courseID].classes_array[curr_classID];
         //remove curr_class from time tree
+        view_tree.removeNode(Lecture(courseID, curr_classID, curr_class_time));
     }
     //remove course from course_map
     course_map.erase(courseID);
@@ -72,7 +73,6 @@ void CoursesManager::WatchClass(int courseID, int classID, int time)
     {
         TreeNode<Lecture>* prev_node = view_tree.find(Lecture(courseID, classID, prev_time));
         view_tree.removeNode(prev_node->getData());
-        std::cout << view_tree << std::endl;//debug
     }
     int curr_time = prev_time + time;
     view_tree.insertNode(Lecture(courseID, classID, curr_time));
@@ -103,17 +103,12 @@ void CoursesManager::GetIthWatchedClass(int i, int* courseID, int* classID)
     {
         throw InvalidInput();
     }
-    if(false) //if time tree size < i
+    int size = view_tree.getSize();
+    if(i > size)
     {
-
-    }
-    // if(i > this->times_map.getSize()) //if time tree size < i
-    // {
-    //     throw Failure();
-    // }
-    // Lecture ith = times_map.Select(times_map.getSize() - i);
-    
-    //for testing
-    *courseID = -1;
-    *classID = -1;
+        throw Failure();
+    }    
+    Lecture ith = view_tree.Select(size - i + 1);    
+    *courseID = ith.courseID;
+    *classID = ith.classID;
 }
