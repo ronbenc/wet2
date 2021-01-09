@@ -59,6 +59,7 @@
 #include <algorithm>
 #include "TreeNode.h"
 #include "Exceptions.h"
+#include "Lecture.h"
 
 template<class T>
 class AVL_Tree
@@ -85,6 +86,7 @@ class AVL_Tree
     TreeNode<T>* findMin() const;
     TreeNode<T>* findMax() const;   
     
+    
     void deleteTree(TreeNode<T>* root);
     TreeNode<T>* findNextPtr(TreeNode<T>*) const;
     const TreeNode<T>* constFindNextPtr(const TreeNode<T>*) const;
@@ -100,6 +102,7 @@ class AVL_Tree
     void removeNode(T data);
     bool contains(T data);
     T Select(int);
+    TreeNode<T>* find(int courseID, int classID) const;
     TreeNode<T>* getRoot() const;   
     TreeNode<T>* getRoot();
     int getSize() const;
@@ -722,14 +725,37 @@ TreeNode<T>* AVL_Tree<T>::recursiveSelect(TreeNode<T>* tmp_root, int tree_size, 
 }
 
 template<class T>
-T AVL_Tree<T>::Select(int k)
+T AVL_Tree<T>::Select(int index)
 {
     int size = this->getSize();
-    if(k > size)
+    if(index > size)
     {
         throw IllegalArgument_AVL_Tree();
     }
-    return recursiveSelect(root, size, size - k)->getData();
+    return recursiveSelect(root, size, index)->getData();
+}
+
+template <class T>
+TreeNode<T>* AVL_Tree<T>::find(int courseID, int classID) const
+{
+    TreeNode<T>* node = this->getRoot();
+    Lecture tmp = Lecture(0, courseID, classID);
+    while(node)
+    {
+        if(node->getData() == tmp)
+        {
+            return node;
+        }
+        else if(node->getData() < tmp)
+        {
+            node = node->getLeft();
+        }
+        else
+        {
+            node = node->getRight();
+        }        
+    }
+    return nullptr;
 }
 
 

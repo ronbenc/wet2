@@ -69,7 +69,22 @@ void CoursesManager::WatchClass(int courseID, int classID, int time)
     //update in course_map
     course_map[courseID].classes_array[classID] += time;
 
+    
     //update in time tree
+    
+    Lecture tmp = Lecture(0, courseID, classID);
+    int prev_time = 0;
+    
+    //if the class already has been watched, save previous view time and remove from tree
+    if(times_map.contains(tmp))
+    {
+        TreeNode<Lecture>* prev_node = this->times_map.find(courseID, classID);
+        prev_time = prev_node->getData().view_time;
+        times_map.removeNode(Lecture(0, courseID, classID));
+    }    
+
+    //insert with correct data
+    times_map.insertNode(Lecture(prev_time + time, courseID, classID));
 }
 
 int CoursesManager::TimeViewed(int courseID, int classID)
@@ -93,12 +108,13 @@ void CoursesManager::GetIthWatchedClass(int i, int* courseID, int* classID)
     {
         throw InvalidInput();
     }
-    if(false) //if time tree size < i
+    if(i > this->times_map.getSize()) //if time tree size < i
     {
         throw Failure();
     }
-
+    Lecture ith = times_map.Select(times_map.getSize() - i);
+    
     //for testing
-    *courseID = -1;
-    *classID = -1;
+    *courseID = ith.courseID;
+    *classID = ith.classID;
 }
