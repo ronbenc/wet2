@@ -33,7 +33,7 @@ void CoursesManager::RemoveCourse(int courseID)
     {
         int curr_class_time = course_map[courseID].classes_array[curr_classID];
         //remove curr_class from time tree
-        view_tree.removeNode(Lecture(courseID, curr_classID, curr_class_time));
+        view_tree.removeNode(Lecture(curr_class_time, courseID, curr_classID));
     }
     //remove course from course_map
     course_map.erase(courseID);
@@ -69,13 +69,13 @@ void CoursesManager::WatchClass(int courseID, int classID, int time)
 
     //update in time tree - itay
     int prev_time = course_map[courseID].classes_array[classID];
-    if(view_tree.contains(Lecture(courseID, classID, prev_time)))
+    if(view_tree.contains(Lecture(prev_time, courseID, classID)))
     {
-        TreeNode<Lecture>* prev_node = view_tree.find(Lecture(courseID, classID, prev_time));
+        TreeNode<Lecture>* prev_node = view_tree.find(Lecture(prev_time, courseID, classID));
         view_tree.removeNode(prev_node->getData());
     }
     int curr_time = prev_time + time;
-    view_tree.insertNode(Lecture(courseID, classID, curr_time));
+    view_tree.insertNode(Lecture(curr_time, courseID, classID));
 
     //update in course_map
     course_map[courseID].classes_array[classID] += time;

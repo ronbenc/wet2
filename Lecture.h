@@ -11,7 +11,7 @@ class Lecture
     int classID;
 
     Lecture() = default;
-    explicit Lecture(int courseID, int classID, int view_time = 0) : courseID(courseID), classID(classID), view_time(view_time) {}
+    Lecture(int view_time, int courseID, int classID) : view_time(view_time), courseID(courseID), classID(classID) {}
     Lecture(const Lecture& to_copy) = default;
     Lecture& operator=(const Lecture& other) = default;
     ~Lecture() = default;    
