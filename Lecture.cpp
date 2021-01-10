@@ -14,11 +14,11 @@ bool operator<(Lecture a, Lecture b)
     }
     else if(a.courseID != b.courseID)
     {
-        return (a.courseID < b.courseID);
+        return (a.courseID > b.courseID);
     }
     else
     {
-        return (a.classID < b.classID);
+        return (a.classID > b.classID);
     }
 }
 

@@ -13,10 +13,10 @@ class CoursesManager
 {
 private:
     Hash_Table<CourseData> course_map;
-    AVL_Tree<Lecture> view_tree;
+
     
     public:
-    
+    AVL_Tree<Lecture> view_tree;
     CoursesManager() = default;
     ~CoursesManager() = default;
     void AddCourse(int courseID);
