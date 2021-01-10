@@ -57,13 +57,17 @@ int CoursesManager::AddClass(int courseID)
 
 void CoursesManager::WatchClass(int courseID, int classID, int time)
 {
-    if(courseID <= 0 || classID < 0 || time <= 0 || classID+1 > course_map[courseID].size())
+    if(courseID <= 0 || classID < 0 || time <= 0)
     {
         throw InvalidInput();
     }
     if(!course_map.contains(courseID))
     {
         throw Failure();
+    }
+    if(classID+1 > course_map[courseID].size())
+    {
+        throw InvalidInput();
     }
     assert(courseID > 0 && course_map.contains(courseID) && classID >= 0 && time > 0 && classID < course_map[courseID].size());
 
@@ -84,13 +88,17 @@ void CoursesManager::WatchClass(int courseID, int classID, int time)
 
 int CoursesManager::TimeViewed(int courseID, int classID)
 {
-    if(courseID <= 0 || classID < 0 || classID+1 > course_map[courseID].size())
+    if(courseID <= 0 || classID < 0)
     {
         throw InvalidInput();
     }
     if(!course_map.contains(courseID))
     {
         throw Failure();
+    }
+    if(classID+1 > course_map[courseID].size())
+    {
+        throw InvalidInput();
     }
     assert(courseID > 0 && course_map.contains(courseID) && classID >= 0 && classID < course_map[courseID].size());
 
