@@ -75,15 +75,15 @@ void CoursesManager::WatchClass(int courseID, int classID, int time)
     int prev_time = course_map[courseID].classes_array[classID];
     if(view_tree.contains(Lecture(prev_time, courseID, classID)))
     {
-        TreeNode<Lecture>* prev_node = view_tree.find(Lecture(prev_time, courseID, classID));
-        view_tree.removeNode(prev_node->getData());
+        //TreeNode<Lecture>* prev_node = view_tree.find(Lecture(prev_time, courseID, classID));
+        // view_tree.removeNode(prev_node->getData());
+        view_tree.removeNode(Lecture(prev_time, courseID, classID));
     }
     int curr_time = prev_time + time;
     view_tree.insertNode(Lecture(curr_time, courseID, classID));
 
     //update in course_map
     course_map[courseID].classes_array[classID] += time;
-
 }
 
 int CoursesManager::TimeViewed(int courseID, int classID)
